@@ -5,11 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <link rel="shortcut icon" href="#" />
-    <link rel="stylesheet" type="text/css" href="{{_res_path}}html/common/common.css" />
-    
-    {{if theme == "snow"}}
-    <link rel="stylesheet" href="{{_res_path}}html/common/theme/snow/snow.css">
-    {{else if theme == "topText" || theme == "foolsDay"}}
+
+    {{if theme == "topText" || theme == "foolsDay"}}
     <link rel="stylesheet" href="{{_res_path}}html/common/theme/topText/topText.css">
     {{/if}}
 

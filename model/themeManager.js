@@ -54,6 +54,7 @@ const encodeThemeUrlPath = value => value.split('/').map(encodeURIComponent).joi
  * @property {string} dir 主题目录绝对路径
  * @property {string} dirName 主题目录名
  * @property {string} [font] 字体文件名
+ * @property {string[]} [fontPages] 允许应用自定义字体的渲染页面
  * @property {string} [background] 背景图文件名
  * @property {Record<string, string>} [icons] 评级图标文件名映射（key 与 song.Rating 取值一致）
  * @property {Record<string, string>} [colors] 四难度基础色（AT/IN/HD/EZ）
@@ -190,6 +191,10 @@ export default await new class themeManager {
             }
             if (Object.keys(pageCss).length) entry.css = pageCss
         }
+        if (Array.isArray(yamlData.fontPages)) {
+            const fontPages = yamlData.fontPages.filter(page => typeof page === 'string' && PAGE_KEY_RE.test(page))
+            if (fontPages.length) entry.fontPages = fontPages
+        }
         if (yamlData.icon && typeof yamlData.icon === 'object') {
             /** @type {Record<string, string>} */
             const icons = {}
@@ -213,7 +218,7 @@ export default await new class themeManager {
     /**
      * 获取主题条目（内置或自定义），未知 id 返回 null
      * @param {string} [id]
-     * @returns {{id: string, name: string, dir?: string, dirName?: string, template?: string, css?: Record<string, string>, legacyCss?: boolean, font?: string, background?: string, icons?: Record<string, string>, colors?: Record<string, string>} | null}
+     * @returns {{id: string, name: string, dir?: string, dirName?: string, template?: string, css?: Record<string, string>, legacyCss?: boolean, font?: string, fontPages?: string[], background?: string, icons?: Record<string, string>, colors?: Record<string, string>} | null}
      */
     getTheme(id) {
         if (!id) return null
@@ -320,8 +325,12 @@ export default await new class themeManager {
             if (pageCss) {
                 themeInfo.cssUrl = assetUrl(pageCss)
                 themeInfo.cssMode = custom.legacyCss ? 'replace' : 'overlay'
-                // 未给当前页面配置 CSS 时保留插件原生字体。
-                const font = resolveAsset(custom.font)
+                // 覆盖官方页面时保留原生字体；字体需由主题显式按页面启用。
+                const fontPages = custom.fontPages || ['b19/b19']
+                const fontEnabled = fontPages.some(page => {
+                    return page.includes('/') ? page === renderTarget : page === app
+                })
+                const font = fontEnabled ? resolveAsset(custom.font) : null
                 if (font) themeInfo.fontUrl = assetUrl(font)
             }
             const background = resolveAsset(custom.background)

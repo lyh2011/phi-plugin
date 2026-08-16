@@ -71,7 +71,8 @@ test('getRenderInfo：按页面选择 CSS，缺省页面保留背景和颜色但
         assert.ok(info)
         assert.equal(info.themeInfo.cssUrl, `resources/html/b19/themes/milthm/${page}.css`)
         assert.equal(info.themeInfo.cssMode, 'overlay')
-        assert.equal(info.themeInfo.fontUrl, 'resources/html/b19/themes/milthm/font.ttf')
+        assert.equal(info.themeInfo.fontUrl,
+            page === 'b19' ? 'resources/html/b19/themes/milthm/font.ttf' : undefined)
     }
 
     const fallback = themeManager.getRenderInfo('milthm', RES, 'unconfiguredPage')
@@ -128,6 +129,8 @@ test('新版页面 CSS 优先匹配完整渲染目标，再回退到 app 短键'
             `id: "${testId}"`,
             'name: "Page keys"',
             'font: "font.ttf"',
+            'fontPages:',
+            '  - setting',
             'css:',
             '  setting: "setting.css"',
             '  setting/userSetting: "user-setting.css"',
@@ -460,7 +463,7 @@ test('默认页面 CSS 从主题别名读取难度色', () => {
     assert.ok(table.includes('var(--phi-theme-IN, #ff5d5d)'))
 })
 
-test('sign.art：页面主题样式后置；未配置页面样式时使用默认字体', () => {
+test('sign.art：页面覆盖样式不接管官方字体；未配置页面样式使用默认 CSS', () => {
     const source = fs.readFileSync(path.join(pluginResources, 'html', 'sign', 'sign.art'), 'utf8')
     const signData = {
         ...renderData('milthm', null),
@@ -490,7 +493,7 @@ test('sign.art：页面主题样式后置；未配置页面样式时使用默认
     const themedHtml = art.render(source, { ...signData, themeInfo: themed.themeInfo })
     assert.ok(themedHtml.includes('html/sign/sign.css'))
     assert.ok(themedHtml.includes('themes/milthm/sign.css'))
-    assert.ok(themedHtml.includes('font-family: "phi-theme"'))
+    assert.ok(!themedHtml.includes('font-family: "phi-theme"'))
     assert.ok(themedHtml.indexOf('html/sign/sign.css') < themedHtml.indexOf('themes/milthm/sign.css'))
 
     const fallback = themeManager.getRenderInfo('milthm', RES, 'unconfiguredPage')
@@ -503,4 +506,13 @@ test('sign.art：页面主题样式后置；未配置页面样式时使用默认
     assert.ok(!fallbackHtml.includes('@font-face'))
     assert.ok(!fallbackHtml.includes('font-family: "phi-theme"'))
     assert.ok(!fallbackHtml.includes('themes/milthm/sign.css'))
+})
+
+test('公共 CSS 由页面样式单独加载，布局不重复注入', () => {
+    const layout = fs.readFileSync(path.join(pluginResources, 'html', 'common', 'layout', 'default.art'), 'utf8')
+    assert.ok(!layout.includes('html/common/common.css'))
+    for (const page of ['analyzeSaveHistory', 'chartImg', 'newnotice', 'update', 'arcgrosB19']) {
+        const css = fs.readFileSync(path.join(pluginResources, 'html', page, `${page}.css`), 'utf8')
+        assert.match(css, /^@import ["']\.\.\/common\/common\.css["'];/)
+    }
 })
