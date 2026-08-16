@@ -462,7 +462,11 @@ export class phisong extends phiPluginBase {
 
         let result = songsname[randbt(songsname.length - 1)]
 
-        send.send_with_At(e, await picmodle.rand(e, result))
+        const pluginData = await getNotes.getNotesData(e.user_id)
+        send.send_with_At(e, await picmodle.rand(e, {
+            ...result,
+            theme: pluginData?.theme || 'star',
+        }))
         return true
     }
 
@@ -727,9 +731,11 @@ export class phisong extends phiPluginBase {
             }
         }
 
+        const pluginData = await getNotes.getNotesData(e.user_id)
         const newSongImg = await picmodle.common(e, 'newSong', {
             ans,
-            background: getInfo.getill(getInfo.illlist[Number((Math.random() * (getInfo.illlist.length - 1)).toFixed(0))], 'blur')
+            background: getInfo.getill(getInfo.illlist[Number((Math.random() * (getInfo.illlist.length - 1)).toFixed(0))], 'blur'),
+            theme: pluginData?.theme || 'star',
         });
         send.send_with_At(e, [newSongImg, msg]);
     }
@@ -1234,7 +1240,11 @@ export class phisong extends phiPluginBase {
     async newNotice(e) {
         const info = await TapInfo.PgrTapNotice(1);
         if (info) {
-            const img = await picmodle.common(e, 'newnotice', info);
+            const pluginData = await getNotes.getNotesData(e.user_id)
+            const img = await picmodle.common(e, 'newnotice', {
+                ...info,
+                theme: pluginData?.theme || 'star',
+            });
             send.send_with_At(e, img);
         }
     }
@@ -1307,6 +1317,7 @@ async function songInfo(page, addComment, id, e) {
             }
         };
     }
+    data.theme = (await getNotes.getNotesData(e.user_id))?.theme || 'star'
     return await picmodle.common(e, 'atlas', data);
 }
 

@@ -855,6 +855,8 @@ export class phib19 extends phiPluginBase {
             return false
         }
 
+        const pluginData = await getNotes.getNotesData(e.user_id)
+
         let chap = fCompute.fuzzySearch(msg, getInfo.chapNick)[0]?.value
 
         if (!chap && msg != 'ALL') {
@@ -958,6 +960,7 @@ export class phib19 extends phiPluginBase {
             num: rank.EZ,
             chapName: msg == 'ALL' ? 'AllSong' : chap,
             chapIll: getInfo.getChapIll(msg == 'ALL' ? 'AllSong' : chap),
+            theme: pluginData?.theme || 'star',
         }))
 
     }
@@ -1084,6 +1087,8 @@ async function getScore(songId, e, args = {}) {
         return true
     }
 
+    const pluginData = await getNotes.getNotesData(e.user_id)
+
     const info = getInfo.info(songId, true)
     if (!info) {
         send.send_with_At(e, `未找到${songId}的相关信息QAQ！`)
@@ -1151,6 +1156,7 @@ async function getScore(songId, e, args = {}) {
         // EX: dan?.EX,
         history: history,
         illustration: '',
+        theme: pluginData?.theme || 'star',
     }
 
     for (let level of Level) {

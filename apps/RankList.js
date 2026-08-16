@@ -14,6 +14,7 @@ import { canUseApi } from '../model/user/apiPermission.js';
 import logger from '../components/Logger.js'
 import platform from '../components/platform/index.js'
 import { UserCredentials } from '../model/user/userCredentials.js'
+import getNotes from '../model/user/getNotes.js'
 
 /**@import {botEvent} from '../components/baseClass.js' */
 
@@ -55,12 +56,16 @@ export class phiRankList extends phiPluginBase {
             return false
         }
 
+        const pluginData = await getNotes.getNotesData(e.user_id)
+        const theme = pluginData?.theme || 'star'
+
 
 
         if (await canUseApi(e)) {
             const credentials = UserCredentials.fromEvent(e)
             let data = {
                 Title: "RankingScore排行榜",
+                theme,
                 totDataNum: 0,
                 BotNick: platform.getBotNickname(e),
                 /** @type {rankingListObject[]} */
@@ -84,6 +89,7 @@ export class phiRankList extends phiPluginBase {
         }
         let data = {
             Title: "RankingScore排行榜",
+            theme,
             totDataNum: 0,
             BotNick: platform.getBotNickname(e),
             /** @type {rankingListObject[]} */

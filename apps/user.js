@@ -111,6 +111,8 @@ export class phiuser extends phiPluginBase {
             return true
         }
 
+        const pluginData = await getNotes.getNotesData(e.user_id)
+
         let stats = await save.getStats()
 
         let money = save.gameProgress.money
@@ -261,6 +263,7 @@ export class phiuser extends phiPluginBase {
             acc_rks_range: acc_rks_range,
             acc_rks_AccRange: acc_rks_AccRange_position,
             background: bksong,
+            theme: pluginData?.theme || 'star',
         }
 
         // console.info(acc_rks_AccRange_position)
@@ -286,6 +289,8 @@ export class phiuser extends phiPluginBase {
         if (!save) {
             return true
         }
+
+        const pluginData = await getNotes.getNotesData(e.user_id)
 
         /**匹配定数区间 */
         let msg = e.msg.replace(/^[#/](.*?)(lvsco(re)?)(\s*)/, "")
@@ -480,6 +485,7 @@ export class phiuser extends phiPluginBase {
             rks: save.saveInfo.summary.rankingScore,
             PlayerId: fCompute.convertRichText(save.saveInfo.PlayerId),
             background: getInfo.getill(illList[fCompute.randInt(0, illList.length - 1)], 'blur'),
+            theme: pluginData?.theme || 'star',
         }
 
         // let remsg = ''
@@ -665,9 +671,12 @@ export class phiuser extends phiPluginBase {
 
         const stats = analyzeSaveHistory(history);
 
+        const pluginData = await getNotes.getNotesData(e.user_id)
+
         send.send_with_At(e, await picmodle.analyzeSaveHistory(e, {
             stats,
             background: getInfo.getill(getInfo.illlist[fCompute.randInt(0, getInfo.illlist.length - 1)]),
+            theme: pluginData?.theme || 'star',
         }));
     }
 

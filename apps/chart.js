@@ -2,6 +2,7 @@ import Config from '../components/Config.js'
 import getInfo from "../model/game/getInfo.js";
 import send from "../model/render/send.js";
 import picmodle from '../model/render/picmodle.js'
+import getNotes from '../model/user/getNotes.js'
 import getBanGroup from '../model/user/getBanGroup.js';
 import phiPluginBase from '../components/baseClass.js';
 import makeRequest from '../model/api/makeRequest.js';
@@ -592,9 +593,12 @@ async function getChartImg(e, id, options) {
     wordsMaxValue
   }
 
+  const pluginData = await getNotes.getNotesData(e.user_id)
+
   const img = await picmodle.common(e, 'chartImg', {
     ...chartInfo,
     chartImg: getInfo.getChartImg(info.id, rank),
+    theme: pluginData?.theme || 'star',
   });
 
   await send.send_with_At(e, [img, `${info.song} - ${rank}\n谱师：${info.chart[rank].charter}`])

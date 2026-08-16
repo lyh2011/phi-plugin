@@ -407,6 +407,7 @@ export class phimoney extends phiPluginBase {
         }
 
         let jrrp = (await createJrrp(e)).oriData;
+        const pluginData = await getNotes.getNotesData(e.user_id)
         let data = {
             bkg: getInfo.getill(/**@type {any} */("ShineAfter.ADeanJocularACE.0")),
             lucky: jrrp[0],
@@ -417,6 +418,7 @@ export class phimoney extends phiPluginBase {
             sentence: Number(jrrp[1]) ? sentence[jrrp[1]] : jrrp[1],
             good: jrrp.slice(2, 6),
             bad: jrrp.slice(6, 10),
+            theme: pluginData?.theme || 'default',
         }
         send.send_with_At(e, await picmodle.common(e, 'jrrp', data))
     }

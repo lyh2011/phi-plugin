@@ -3,6 +3,7 @@ import { Data, Version, Plugin_Name, Display_Plugin_Name, Config } from '../../c
 import { _path, pluginResources, imgPath, tempPath } from '../filesystem/path.js'
 import fCompute from '../game/fCompute.js'
 import themeManager from '../themeManager.js'
+import getNotes from '../user/getNotes.js'
 import fs from 'node:fs'
 import logger from '../../components/Logger.js'
 import segment from '../../components/segment.js'
@@ -45,6 +46,51 @@ export default await new class picmodle {
         this.shuttingDown = false
         this.closePromise = null
         registerProcessCleanup(() => this.close(), () => this.forceClose())
+    }
+
+    /**
+     * Resolve the theme for a render request.
+     *
+     * Render callers normally include `theme` in their data object.  A few
+     * older commands render through the same API without doing so, however,
+     * which meant page-specific CSS was silently skipped.  Keep an explicit
+     * value authoritative, then fall back to the event user's persisted
+     * setting.  The final default is deliberately `default` so a synthetic
+     * event (API/utility renders) remains deterministic.
+     *
+     * @param {any} e
+     * @param {any} [params]
+     * @param {any} [cfg]
+     * @returns {Promise<string>}
+     */
+    async resolveTheme(e, params = {}, cfg = {}) {
+        const explicit = params?.theme || cfg?.theme
+        if (explicit) return explicit
+
+        const eventTheme = e?.theme || e?.pluginData?.theme || e?.plugin_data?.theme
+        if (eventTheme) return eventTheme
+
+        const userId = e?.user_id ?? e?.userId
+        if (!userId) return 'default'
+        try {
+            const pluginData = await getNotes.getNotesData(userId)
+            return pluginData?.theme || 'default'
+        } catch {
+            // A missing/invalid user data file must not make image rendering fail.
+            return 'default'
+        }
+    }
+
+    /**
+     * Add the resolved theme without mutating a caller-owned data object.
+     * @param {any} e
+     * @param {any} [params]
+     * @param {any} [cfg]
+     */
+    async prepareRenderData(e, params = {}, cfg = {}) {
+        const data = { ...(params || {}) }
+        if (!data.theme) data.theme = await this.resolveTheme(e, data, cfg)
+        return data
     }
 
     async init() {
@@ -179,10 +225,14 @@ export default await new class picmodle {
      * @param {1|2|number} picversion 版本
      */
     async user_info(e, data, picversion) {
+        const renderData = await this.prepareRenderData(e, data, {
+            e,
+            scale: Config.getUserCfg('config', 'renderScale') / 100
+        })
         switch (picversion) {
             case 1: {
                 return await this.render('userinfo/userinfo', {
-                    ...data,
+                    ...renderData,
                 }, {
                     e,
                     scale: Config.getUserCfg('config', 'renderScale') / 100
@@ -190,7 +240,7 @@ export default await new class picmodle {
             }
             case 2: {
                 return await this.render('userinfo/userinfo-old', {
-                    ...data,
+                    ...renderData,
                 }, {
                     e,
                     scale: Config.getUserCfg('config', 'renderScale') / 100
@@ -198,7 +248,7 @@ export default await new class picmodle {
             }
             default: {
                 return await this.render('userinfo/userinfo', {
-                    ...data,
+                    ...renderData,
                 }, {
                     e,
                     scale: Config.getUserCfg('config', 'renderScale') / 100
@@ -235,10 +285,15 @@ export default await new class picmodle {
      */
     async score(e, data, picversion) {
 
+        const renderData = await this.prepareRenderData(e, data, {
+            e,
+            scale: Config.getUserCfg('config', 'renderScale') / 100
+        })
+
         switch (picversion) {
             case 1: {
                 return await this.render('score/score', {
-                    ...data,
+                    ...renderData,
                 }, {
                     e,
                     scale: Config.getUserCfg('config', 'renderScale') / 100
@@ -247,7 +302,7 @@ export default await new class picmodle {
 
             default: {
                 return await this.render('score/scoreOld', {
-                    ...data,
+                    ...renderData,
                 }, {
                     e,
                     scale: Config.getUserCfg('config', 'renderScale') / 100
@@ -333,8 +388,12 @@ export default await new class picmodle {
      * @returns 
      */
     async common(e, kind, data, tplName = kind) {
+        const renderData = await this.prepareRenderData(e, data, {
+            e,
+            scale: Config.getUserCfg('config', 'renderScale') / 100,
+        })
         return await this.render(`${kind}/${tplName}`, {
-            ...data,
+            ...renderData,
         }, {
             e,
             scale: Config.getUserCfg('config', 'renderScale') / 100,
@@ -349,6 +408,7 @@ export default await new class picmodle {
      * @returns 
      */
     async render(renderPath, params, cfg) {
+        params = await this.prepareRenderData(cfg?.e, params, cfg)
         const id = this.tot++
         const waitingTimeout = Config.getUserCfg('config', 'waitingTimeout')
 
