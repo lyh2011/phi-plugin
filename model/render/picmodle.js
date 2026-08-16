@@ -368,7 +368,7 @@ export default await new class picmodle {
     /**
      * 
      * @param {botEvent} e 
-     * @param {{stats: import('../save/analyzeSaveHistory.js').AnalyzeSaveHistoryResult} & {background: string}} data 
+     * @param {{stats: import('../save/analyzeSaveHistory.js').AnalyzeSaveHistoryResult} & {background: string, theme?: string}} data
      * @returns 
      */
     async analyzeSaveHistory(e, data) {

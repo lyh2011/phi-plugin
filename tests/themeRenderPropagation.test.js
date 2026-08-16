@@ -33,7 +33,7 @@ test('common forwards the resolved theme to the concrete render target', async (
     const originalRender = picmodle.render
     /** @type {any[]} */ const calls = []
     getNotes.getNotesData = async () => /** @type {any} */ ({ theme: 'milthm' })
-    picmodle.render = /** @type {any} */ (async (...args) => {
+    picmodle.render = /** @type {any} */ (async (/** @type {any[]} */ ...args) => {
         calls.push(args)
         return 'image'
     })
