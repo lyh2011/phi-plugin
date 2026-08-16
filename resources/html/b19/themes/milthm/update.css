@@ -27,33 +27,6 @@
   border-radius: var(--milthm-radius-sm);
 }
 
-.title .r .Challenge-r,
-.title .r .Challenge-r_1 {
-  position: relative;
-  display: grid;
-  place-items: center;
-}
-
-.title .r .Challenge-r > *,
-.title .r .Challenge-r_1 > * {
-  grid-area: 1 / 1;
-}
-
-.title .r .Challenge-r img,
-.title .r .Challenge-r_1 img {
-  width: 100%;
-  height: auto;
-  margin: 0;
-}
-
-.title .r .Challenge-r p,
-.title .r .Challenge-r_1 p {
-  z-index: 1;
-  margin: 0;
-  line-height: 1;
-  transform: translateY(-0.3em);
-}
-
 .coinbox,
 .coinbox_un {
   border-radius: var(--milthm-radius-sm);
