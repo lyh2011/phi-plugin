@@ -94,7 +94,7 @@
         </div>
         {{if gameuser}}
         <div class="labelContent clip-box">
-          <img src="{{_imgPath}}{{dif.rating}}.png" alt="score" />
+          <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[dif.rating] ? themeInfo.icons[dif.rating] : (_imgPath + dif.rating + '.png')}}" alt="score" />
         </div>
         {{/if}}
       </div>
@@ -107,9 +107,9 @@
           {{if gameuser}}
           <div class="score">
             {{if song.score == 100}}
-            <img src="{{_imgPath}}phi.png" alt="phi" />
+            <img src="{{themeInfo && themeInfo.icons && themeInfo.icons.phi ? themeInfo.icons.phi : (_imgPath + 'phi.png')}}" alt="phi" />
             {{else if song.score == 0}}
-            <img src="{{_imgPath}}NEW.png" alt="NEW" />
+            <img src="{{themeInfo && themeInfo.icons && themeInfo.icons.NEW ? themeInfo.icons.NEW : (_imgPath + 'NEW.png')}}" alt="NEW" />
             {{else}}
             <p>{{song.score.toFixed(2)}}</p>
             {{/if}}

@@ -219,7 +219,7 @@
                 <p>{{rks.toFixed(8)}}</p>
             </div>
             <div class="tot_Rating">
-                <img src="{{_res_path}}html/otherimg/{{rating.tot}}.png" alt="{{rating.tot}}">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[rating.tot] ? themeInfo.icons[rating.tot] : (_res_path + 'html/otherimg/' + rating.tot + '.png')}}" alt="{{rating.tot}}">
             </div>
             <div class="title_group" id="score">
                 <div class="title_group-real" id="real-score">
@@ -302,7 +302,7 @@
                 {{each rating}}
                 {{if $index != "tot"}}
                 <div class="rating_stats_group">
-                    <img src="{{_res_path}}html/otherimg/{{$index}}.png" alt="{{$index}}">
+                    <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[$index] ? themeInfo.icons[$index] : (_res_path + 'html/otherimg/' + $index + '.png')}}" alt="{{$index}}">
                     <p>{{$value}}</p>
                     <div class="rating_stats_bar" style="height: {{$value / maxv * 100}}%;"></div>
                 </div>

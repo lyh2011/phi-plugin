@@ -32,7 +32,7 @@
             <div class="score_rating">
               <div class="score">{{line.level}}</div>
               <div class="rating">
-                <img src="{{_res_path}}html/otherimg/phi.png" alt="phi">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons.phi ? themeInfo.icons.phi : (_res_path + 'html/otherimg/phi.png')}}" alt="phi">
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@
             <div class="score_rating">
               <div class="score">{{line.score}}</div>
               <div class="rating">
-                <img src="{{line.Rating ? `${_res_path}html/otherimg/${line.Rating}.png` : `${_res_path}html/otherimg/NEW.png`}}" alt="{{line.Rating}}">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[line.Rating || 'NEW'] ? themeInfo.icons[line.Rating || 'NEW'] : (_res_path + 'html/otherimg/' + (line.Rating || 'NEW') + '.png')}}" alt="{{line.Rating}}">
               </div>
             </div>
           </div>
@@ -100,7 +100,7 @@
             <div class="score_rating">
               <div class="score">{{line.score}}</div>
               <div class="rating">
-                <img src="{{line.Rating ? `${_res_path}html/otherimg/${line.Rating}.png` : `${_res_path}html/otherimg/NEW.png`}}" alt="{{line.Rating}}">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[line.Rating || 'NEW'] ? themeInfo.icons[line.Rating || 'NEW'] : (_res_path + 'html/otherimg/' + (line.Rating || 'NEW') + '.png')}}" alt="{{line.Rating}}">
               </div>
             </div>
           </div>
@@ -134,7 +134,7 @@
             <div class="score_rating">
               <div class="score">{{line.score}}</div>
               <div class="rating">
-                <img src="{{line.Rating ? `${_res_path}html/otherimg/${line.Rating}.png` : `${_res_path}html/otherimg/NEW.png`}}" alt="{{line.Rating}}">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[line.Rating || 'NEW'] ? themeInfo.icons[line.Rating || 'NEW'] : (_res_path + 'html/otherimg/' + (line.Rating || 'NEW') + '.png')}}" alt="{{line.Rating}}">
               </div>
             </div>
           </div>
@@ -168,7 +168,7 @@
             <div class="score_rating">
               <div class="score">{{line.score}}</div>
               <div class="rating">
-                <img src="{{line.Rating ? `${_res_path}html/otherimg/${line.Rating}.png` : `${_res_path}html/otherimg/NEW.png`}}" alt="{{line.Rating}}">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[line.Rating || 'NEW'] ? themeInfo.icons[line.Rating || 'NEW'] : (_res_path + 'html/otherimg/' + (line.Rating || 'NEW') + '.png')}}" alt="{{line.Rating}}">
               </div>
             </div>
           </div>
@@ -202,7 +202,7 @@
             <div class="score_rating">
               <div class="score">{{line.score}}</div>
               <div class="rating">
-                <img src="{{line.Rating ? `${_res_path}html/otherimg/${line.Rating}.png` : `${_res_path}html/otherimg/NEW.png`}}" alt="{{line.Rating}}">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[line.Rating || 'NEW'] ? themeInfo.icons[line.Rating || 'NEW'] : (_res_path + 'html/otherimg/' + (line.Rating || 'NEW') + '.png')}}" alt="{{line.Rating}}">
               </div>
             </div>
           </div>
@@ -236,7 +236,7 @@
             <div class="score_rating">
               <div class="score">{{line.score}}</div>
               <div class="rating">
-                <img src="{{line.Rating ? `${_res_path}html/otherimg/${line.Rating}.png` : `${_res_path}html/otherimg/NEW.png`}}" alt="{{line.Rating}}">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[line.Rating || 'NEW'] ? themeInfo.icons[line.Rating || 'NEW'] : (_res_path + 'html/otherimg/' + (line.Rating || 'NEW') + '.png')}}" alt="{{line.Rating}}">
               </div>
             </div>
           </div>

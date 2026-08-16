@@ -31,7 +31,7 @@
                     <div class="score_rating">
                         <div class="score">{{line.score}}</div>
                         <div class="rating">
-                            <img src="{{line.Rating ? `${_res_path}html/otherimg/${line.Rating}.png` : `${_res_path}html/otherimg/NEW.png`}}"
+                            <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[line.Rating || 'NEW'] ? themeInfo.icons[line.Rating || 'NEW'] : (_res_path + 'html/otherimg/' + (line.Rating || 'NEW') + '.png')}}"
                                 alt="{{line.Rating}}">
                         </div>
                     </div>

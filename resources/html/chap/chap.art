@@ -41,7 +41,7 @@
                     {{each song.chart chart rank}}
                     <div class="rank {{rank}}" style="height: {{song.chart.AT ? 23 : 30}}%;">
                         <div class="rating">
-                            <img src="{{_imgPath}}/{{chart.Rating}}.png" alt="{{chart.Rating}}">
+                            <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[chart.Rating] ? themeInfo.icons[chart.Rating] : (_imgPath + '/' + chart.Rating + '.png')}}" alt="{{chart.Rating}}">
                         </div>
                         <div class="dif">{{chart.difficulty}}</div>
                         {{if chart.acc && num <= 10}}

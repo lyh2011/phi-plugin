@@ -119,7 +119,7 @@
                 {{if rank.Rating}}
                 <div class="stats-up">
                     <div class="Rating">
-                        <img src="{{_res_path}}html/otherimg/{{rank.Rating}}.png" alt="{{rank.Rating}}">
+                        <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[rank.Rating] ? themeInfo.icons[rank.Rating] : (_res_path + 'html/otherimg/' + rank.Rating + '.png')}}" alt="{{rank.Rating}}">
                     </div>
                     {{if rank.Rating != 'NEW'}}
                     <div class="data_score">
@@ -163,7 +163,7 @@
                     <p>{{song.date_new}}</p>
                 </div>
                 <div class="HistoryRating">
-                    <img src="{{_res_path}}html/otherimg/{{song.Rating}}.png" alt="{{song.Rating}}">
+                    <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[song.Rating] ? themeInfo.icons[song.Rating] : (_res_path + 'html/otherimg/' + song.Rating + '.png')}}" alt="{{song.Rating}}">
                 </div>
                 <div class="HistoryScore">
                     <p>{{song.score_new}}</p>
@@ -218,7 +218,7 @@
                 </div>
             </div>
             <div class="rankUserScoreRating">
-                <img src="{{_res_path}}html/otherimg/{{user.record.Rating}}.png" alt="{{user.record.Rating}}">
+                <img src="{{themeInfo && themeInfo.icons && themeInfo.icons[user.record.Rating] ? themeInfo.icons[user.record.Rating] : (_res_path + 'html/otherimg/' + user.record.Rating + '.png')}}" alt="{{user.record.Rating}}">
             </div>
         </div>
         {{/each}}
