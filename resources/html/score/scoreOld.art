@@ -20,9 +20,6 @@
         {{if themeInfo.colors.EZ}}--EZ: {{themeInfo.colors.EZ}}; --phi-theme-EZ: {{themeInfo.colors.EZ}}; --phi-theme-EZ-dark: color-mix(in srgb, {{themeInfo.colors.EZ}} 50%, black);{{/if}}
     }
     {{/if}}
-    {{if themeInfo.backgroundUrl}}
-    body > .background:not(.theme-background) { display: none; }
-    {{/if}}
 </style>
 {{/if}}
 {{block 'main'}}
