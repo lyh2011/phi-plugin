@@ -67,7 +67,10 @@ export default await new class picmodle {
         const explicit = params?.theme || cfg?.theme
         if (explicit) return explicit
 
-        const eventTheme = e?.theme || e?.pluginData?.theme || e?.plugin_data?.theme
+        const eventTheme = e?.theme
+            || e?.pluginData?.theme
+            || e?.plugin_data?.theme
+            || e?.plugin_data?.plugin_data?.theme
         if (eventTheme) return eventTheme
 
         const userId = e?.user_id ?? e?.userId
