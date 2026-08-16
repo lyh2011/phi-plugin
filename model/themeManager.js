@@ -192,7 +192,10 @@ export default await new class themeManager {
             if (Object.keys(pageCss).length) entry.css = pageCss
         }
         if (Array.isArray(yamlData.fontPages)) {
-            const fontPages = yamlData.fontPages.filter(page => typeof page === 'string' && PAGE_KEY_RE.test(page))
+            const rawFontPages = /** @type {unknown[]} */ (yamlData.fontPages)
+            const fontPages = /** @type {string[]} */ (rawFontPages.filter((page) => {
+                return typeof page === 'string' && PAGE_KEY_RE.test(page)
+            }))
             if (fontPages.length) entry.fontPages = fontPages
         }
         if (yamlData.icon && typeof yamlData.icon === 'object') {

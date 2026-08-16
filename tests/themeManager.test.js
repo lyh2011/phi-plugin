@@ -516,3 +516,20 @@ test('公共 CSS 由页面样式单独加载，布局不重复注入', () => {
         assert.match(css, /^@import ["']\.\.\/common\/common\.css["'];/)
     }
 })
+
+test('Milthm 页面覆盖不重新接管官方课题和顶部几何', () => {
+    const updateCss = fs.readFileSync(
+        path.join(pluginResources, 'html', 'b19', 'themes', 'milthm', 'update.css'),
+        'utf8',
+    )
+    const arcCss = fs.readFileSync(
+        path.join(pluginResources, 'html', 'b19', 'themes', 'milthm', 'arcgrosB19.css'),
+        'utf8',
+    )
+
+    // 这些元素的尺寸和位置由官方页面 CSS 决定；主题层只提供视觉样式。
+    assert.doesNotMatch(updateCss, /\.title \.r \.Challenge-r(?:_1)?\b/)
+    assert.doesNotMatch(updateCss, /(?:^|\n)\s*border\s*:/)
+    assert.doesNotMatch(arcCss, /\.(?:rks_num|player_broad|arcChallenge)\b/)
+    assert.doesNotMatch(arcCss, /(?:^|\n)\s*(?:top|bottom|line-height)\s*:/)
+})

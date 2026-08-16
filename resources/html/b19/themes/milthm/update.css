@@ -8,7 +8,7 @@
 .title .r,
 .svg-box,
 .abox {
-  border: 1px solid var(--milthm-border);
+  box-shadow: 0 0 0 1px var(--milthm-border);
   border-radius: var(--milthm-radius);
 }
 
