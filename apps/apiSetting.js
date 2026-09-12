@@ -15,7 +15,7 @@ import { getApiAccessState } from '../model/user/apiPermission.js'
 import fCompute from '../model/game/fCompute.js'
 import platform from '../components/platform/index.js'
 import getNotes from '../model/user/getNotes.js'
-import { sendQuickCommands, commonQuickCommands } from '../model/game/markdown.js'
+import { sendQuickCommands, apiSettingQuickCommands } from '../model/game/markdown.js'
 
 
 /**@import {botEvent} from '../components/baseClass.js' */
@@ -589,6 +589,6 @@ export class phihelp extends phiPluginBase {
             background: getInfo.getill(getInfo.illlist[Number((Math.random() * (getInfo.illlist.length - 1)).toFixed(0))]),
             theme: pluginData?.theme || 'default'
         }, 'userSetting'))
-        await sendQuickCommands(e, commonQuickCommands(Config.getUserCfg('config', 'cmdhead')), '常用操作')
+        await sendQuickCommands(e, apiSettingQuickCommands(Config.getUserCfg('config', 'cmdhead')), 'API设置快捷操作')
     }
 }

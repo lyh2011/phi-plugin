@@ -85,18 +85,180 @@ export async function sendQuickCommands(e, commands, title = '快捷操作') {
     }
 }
 
-/** 常用的插件入口，供各结果页复用。 */
-export const commonQuickCommands = commandHead => {
-    const head = String(commandHead ?? '').replace(/^[/#]+/, '')
-    if (!head) return []
+/** @param {string} commandHead */
+function normalizeCommandHead(commandHead) {
+    return String(commandHead ?? '').replace(/^[/#]+/, '').trim()
+}
+
+/** @param {string} commandHead @param {string} command */
+function pageCommand(commandHead, command) {
+    const head = normalizeCommandHead(commandHead)
+    return head && command ? `/${head} ${command}` : ''
+}
+
+/** 帮助页：按功能类别提供最常用的入口。 */
+export function helpQuickCommands(commandHead) {
     return [
-        { command: `/${head} help`, label: '帮助' },
-        { command: `/${head} update`, label: '更新存档' },
-        { command: `/${head} b19`, label: 'B19' },
-        { command: `/${head} myset`, label: '用户设置' },
-        { command: `/${head} market`, label: '主题市场' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'p30'), label: 'P30成绩' },
+        { command: pageCommand(commandHead, 'info'), label: '个人信息' },
+        { command: pageCommand(commandHead, 'update'), label: '更新存档' },
+        { command: pageCommand(commandHead, 'myset'), label: '用户设置' },
+        { command: pageCommand(commandHead, 'market'), label: '主题市场' },
     ]
 }
+
+/** 用户设置页：快捷入口必须能直接执行对应设置。 */
+export function userSettingQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'myset theme 0'), label: '切换主题' },
+        { command: pageCommand(commandHead, 'myset avgkind 0'), label: '均值范围' },
+        { command: pageCommand(commandHead, 'myset avgcolor 0'), label: '均值配色' },
+        { command: pageCommand(commandHead, 'myset api 0'), label: '开启API' },
+        { command: pageCommand(commandHead, 'myset B30分析 0'), label: '显示B30分析' },
+        { command: pageCommand(commandHead, 'market'), label: '主题市场' },
+    ]
+}
+
+/** API 用户设置页。 */
+export function apiSettingQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'apiset'), label: '刷新设置' },
+        { command: pageCommand(commandHead, 'tkls'), label: 'Token列表' },
+        { command: pageCommand(commandHead, 'myset'), label: '用户设置' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** API 帮助页。 */
+export function apiHelpQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'bind qrcode'), label: '扫码绑定' },
+        { command: pageCommand(commandHead, 'tkls'), label: 'Token列表' },
+        { command: pageCommand(commandHead, 'apiset'), label: 'API设置' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'help'), label: '全部帮助' },
+    ]
+}
+
+/** Bot 全局设置页。 */
+export function configQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, '设置'), label: '全局设置' },
+        { command: pageCommand(commandHead, 'myset'), label: '用户设置' },
+        { command: pageCommand(commandHead, 'update'), label: '更新插件' },
+        { command: pageCommand(commandHead, 'market'), label: '主题市场' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** 成绩页通用入口，使用 B27 作为默认成绩概览。 */
+export function scoreQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'p30'), label: 'P30成绩' },
+        { command: pageCommand(commandHead, 'info'), label: '个人信息' },
+        { command: pageCommand(commandHead, 'update'), label: '更新存档' },
+    ]
+}
+
+/** 成绩筛选页。 */
+export function userListQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'list'), label: '全部成绩' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'info'), label: '个人信息' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** 存档历史页。 */
+export function historyQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, '2025history'), label: '年度总结' },
+        { command: pageCommand(commandHead, 'hisb30'), label: 'B30历史' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'info'), label: '个人信息' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** B19 衍生分析页。 */
+export function b19AnalysisQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'p30'), label: 'P30成绩' },
+        { command: pageCommand(commandHead, 'lmtacc 90'), label: 'ACC限制' },
+        { command: pageCommand(commandHead, 'suggest'), label: '推分建议' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** 单曲成绩页。 */
+export function singleScoreQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'list'), label: '成绩筛选' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'info'), label: '个人信息' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** 推分建议页。 */
+export function suggestQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'suggest'), label: '刷新建议' },
+        { command: pageCommand(commandHead, 'list'), label: '成绩筛选' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** 章节成绩页。 */
+export function chapterQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'chap ALL'), label: '全部章节' },
+        { command: pageCommand(commandHead, 'chap help'), label: '章节帮助' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'list'), label: '成绩筛选' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** 定数成就页。 */
+export function achievementQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'achievement 1'), label: '查看低定数' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'list'), label: '成绩筛选' },
+        { command: pageCommand(commandHead, 'chap ALL'), label: '章节成绩' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** 绑定/更新页。 */
+export function sessionQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'update'), label: '更新存档' },
+        { command: pageCommand(commandHead, 'bind qrcode'), label: '扫码绑定' },
+        { command: pageCommand(commandHead, 'sessionToken'), label: '查看Token' },
+        { command: pageCommand(commandHead, 'unbind'), label: '解绑' },
+        { command: pageCommand(commandHead, 'myset'), label: '用户设置' },
+    ]
+}
+
+/** 排行榜页。 */
+export function rankQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'ranklist'), label: '排行榜' },
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'info'), label: '个人信息' },
+        { command: pageCommand(commandHead, 'help'), label: '帮助' },
+    ]
+}
+
+/** 兼容旧调用方，默认使用帮助页菜单。 */
+export const commonQuickCommands = helpQuickCommands
 
 /**
  * @param {{slug:string,name:string,botDownloadAllowed:boolean|null}[]} themes
