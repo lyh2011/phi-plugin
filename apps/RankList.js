@@ -14,6 +14,7 @@ import { canUseApi } from '../model/user/apiPermission.js';
 import logger from '../components/Logger.js'
 import platform from '../components/platform/index.js'
 import { UserCredentials } from '../model/user/userCredentials.js'
+import { sendQuickCommands, commonQuickCommands } from '../model/game/markdown.js'
 
 /**@import {botEvent} from '../components/baseClass.js' */
 
@@ -79,6 +80,7 @@ export class phiRankList extends phiPluginBase {
                 }
                 data.me = await makeLargeLine(new Save(api_ranklist.me.save), new saveHistory(api_ranklist.me.history), e)
                 send.send_with_At(e, [await picmodle.common(e, 'rankingList', data), `总数据量：${data.totDataNum}\n`])
+                await sendQuickCommands(e, commonQuickCommands(Config.getUserCfg('config', 'cmdhead')), '常用操作')
                 return true
             }
         }
@@ -139,6 +141,7 @@ export class phiRankList extends phiPluginBase {
         }
 
         send.send_with_At(e, [`总数据量：${data.totDataNum}\n`, await picmodle.common(e, 'rankingList', data)])
+        await sendQuickCommands(e, commonQuickCommands(Config.getUserCfg('config', 'cmdhead')), '常用操作')
     }
 
     /**

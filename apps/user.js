@@ -13,6 +13,7 @@ import { UserCredentials } from '../model/user/userCredentials.js'
 import analyzeSaveHistory from '../model/save/analyzeSaveHistory.js'
 import ScoreHistory from '../model/save/scoreHistory.js'
 import { canUseApi } from '../model/user/apiPermission.js'
+import { sendQuickCommands, commonQuickCommands } from '../model/game/markdown.js'
 
 /**@import {botEvent} from '../components/baseClass.js' */
 
@@ -273,6 +274,7 @@ export class phiuser extends phiPluginBase {
         const infoVersion = e.msg.match(new RegExp(`^[#/](?:${Config.getUserCfg('config', 'cmdhead')})\\s*info([12])?`, 'i'))?.at(-1)
         const kind = Number(infoVersion || 0)
         send.send_with_At(e, await picmodle.user_info(e, data, kind))
+        await sendQuickCommands(e, commonQuickCommands(Config.getUserCfg('config', 'cmdhead')), '常用操作')
     }
 
     /**
@@ -499,6 +501,7 @@ export class phiuser extends phiPluginBase {
 
 
         send.send_with_At(e, await picmodle.lvsco(e, data))
+        await sendQuickCommands(e, commonQuickCommands(Config.getUserCfg('config', 'cmdhead')), '常用操作')
     }
 
     /**

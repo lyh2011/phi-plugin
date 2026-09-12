@@ -22,6 +22,7 @@ import {
     buildRksHistogram,
     getB30AnalysisRecords,
 } from '../model/game/b30Analysis.js';
+import { sendQuickCommands, commonQuickCommands } from '../model/game/markdown.js'
 
 /**@import {botEvent} from '../components/baseClass.js' */
 
@@ -246,6 +247,7 @@ export class phib19 extends phiPluginBase {
         const img = await picmodle.b19(e, data)
         res.unshift(img);
         send.send_with_At(e, res)
+        await sendQuickCommands(e, commonQuickCommands(Config.getUserCfg('config', 'cmdhead')), '常用操作')
     }
 
     /**
@@ -367,6 +369,7 @@ export class phib19 extends phiPluginBase {
         let res = [await picmodle.b19(e, data)]
         res.push(`计算rks: ${save_b19.com_rks}\n存档rks: ${save.saveInfo.summary.rankingScore}`)
         send.send_with_At(e, res)
+        await sendQuickCommands(e, commonQuickCommands(Config.getUserCfg('config', 'cmdhead')), '常用操作')
     }
 
     /**
@@ -512,6 +515,7 @@ export class phib19 extends phiPluginBase {
         let res = [await picmodle.b19(e, data)]
         res.push(`计算rks: ${save_b19.com_rks}\n存档rks: ${save.saveInfo.summary.rankingScore}`)
         send.send_with_At(e, res)
+        await sendQuickCommands(e, commonQuickCommands(Config.getUserCfg('config', 'cmdhead')), '常用操作')
 
     }
 
