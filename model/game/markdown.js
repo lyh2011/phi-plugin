@@ -45,8 +45,9 @@ export function isOfficialBot(e) {
  * 构建通用的快捷操作菜单。
  * @param {{command:string,label:string}[]} commands
  * @param {string} [title]
+ * @param {{showHeaders?: boolean}} [options]
  */
-export function buildQuickCommandMarkdown(commands, title = '快捷操作') {
+export function buildQuickCommandMarkdown(commands, title = '快捷操作', options = {}) {
     const unique = []
     const seen = new Set()
     for (const item of commands || []) {
@@ -64,7 +65,10 @@ export function buildQuickCommandMarkdown(commands, title = '快捷操作') {
         while (row.length < 3) row.push({ command: '', label: '' })
         rows.push(`| ${row.map(item => item.command ? commandInput(item.command, item.label) : '').join(' | ')} |`)
     }
-    return ['***', `${escapeMarkdownText(title)}：`, '', '| 操作 | 操作 | 操作 |', '| :---: | :---: | :---: |', ...rows].join('\n')
+    const headers = options.showHeaders === true
+        ? ['| 操作 | 操作 | 操作 |', '| :---: | :---: | :---: |']
+        : ['|  |  |  |', '| :---: | :---: | :---: |']
+    return ['***', `${escapeMarkdownText(title)}：`, '', ...headers, ...rows].join('\n')
 }
 
 /**
@@ -93,7 +97,7 @@ export async function sendQuickCommands(e, commands, title = '快捷操作') {
 export function buildQuickCommandSectionsMarkdown(sections, title = '快捷操作') {
     const blocks = []
     for (const section of sections || []) {
-        const table = buildQuickCommandMarkdown(section?.commands || [], section?.title || title)
+        const table = buildQuickCommandMarkdown(section?.commands || [], section?.title || title, { showHeaders: false })
         if (table) blocks.push(table)
     }
     return blocks.join('\n\n')
