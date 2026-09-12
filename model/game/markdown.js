@@ -111,11 +111,11 @@ export function helpQuickCommands(commandHead) {
 /** 用户设置页：快捷入口必须能直接执行对应设置。 */
 export function userSettingQuickCommands(commandHead) {
     return [
-        { command: pageCommand(commandHead, 'myset theme 0'), label: '切换主题' },
-        { command: pageCommand(commandHead, 'myset avgkind 0'), label: '均值范围' },
-        { command: pageCommand(commandHead, 'myset avgcolor 0'), label: '均值配色' },
-        { command: pageCommand(commandHead, 'myset api 0'), label: '开启API' },
-        { command: pageCommand(commandHead, 'myset B30分析 0'), label: '显示B30分析' },
+        { command: pageCommand(commandHead, 'myset theme 0'), label: '主题风格' },
+        { command: pageCommand(commandHead, 'myset avgkind 0'), label: 'B30统计数据展示' },
+        { command: pageCommand(commandHead, 'myset avgcolor 0'), label: 'B30均值条配色' },
+        { command: pageCommand(commandHead, 'myset api 0'), label: 'API功能开关' },
+        { command: pageCommand(commandHead, 'myset B30分析 0'), label: 'B30统计分析' },
         { command: pageCommand(commandHead, 'market'), label: '主题市场' },
     ]
 }
@@ -159,6 +159,17 @@ export function scoreQuickCommands(commandHead) {
         { command: pageCommand(commandHead, 'p30'), label: 'P30成绩' },
         { command: pageCommand(commandHead, 'info'), label: '个人信息' },
         { command: pageCommand(commandHead, 'update'), label: '更新存档' },
+    ]
+}
+
+/** 更新存档结果页。 */
+export function updateQuickCommands(commandHead) {
+    return [
+        { command: pageCommand(commandHead, 'b27'), label: 'B27成绩' },
+        { command: pageCommand(commandHead, 'p30'), label: 'P30成绩' },
+        { command: pageCommand(commandHead, 'info'), label: '个人信息' },
+        { command: pageCommand(commandHead, 'list'), label: '成绩筛选' },
+        { command: pageCommand(commandHead, 'myset'), label: '用户设置' },
     ]
 }
 

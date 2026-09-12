@@ -9,7 +9,7 @@ import phiPluginBase from '../components/baseClass.js';
 import getNotes from '../model/user/getNotes.js'
 import getInfo from '../model/game/getInfo.js'
 import { getApiAccessState } from '../model/user/apiPermission.js'
-import { sendQuickCommands, helpQuickCommands, apiHelpQuickCommands, sessionQuickCommands } from '../model/game/markdown.js'
+import { sendQuickCommands, helpQuickCommands, apiHelpQuickCommands } from '../model/game/markdown.js'
 
 /**@import {botEvent} from '../components/baseClass.js' */
 
@@ -82,7 +82,6 @@ export class phihelp extends phiPluginBase {
         }
 
         send.send_with_At(e, `sessionToken有关帮助：\n【推荐】：扫码登录TapTap获取token\n指令：/${Config.getUserCfg('config', 'cmdhead')} bind qrcode\n【基础方法】详见《Phigros非官方查分指引》：https://kdocs.cn/l/cvMDjWPTNaz4\n绑定sessionToken指令：\n/${Config.getUserCfg('config', 'cmdhead')} bind <sessionToken>`)
-        await sendQuickCommands(e, sessionQuickCommands(Config.getUserCfg('config', 'cmdhead')), '绑定帮助快捷操作')
     }
 
     /**
