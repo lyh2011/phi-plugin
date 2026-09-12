@@ -10,7 +10,7 @@ import { getThemeInstallRequesterId } from '../model/theme/installGuard.js'
 import getBanGroup from '../model/user/getBanGroup.js'
 import send from '../model/render/send.js'
 import { isApiCapabilityConfigured } from '../model/user/apiPermission.js'
-import { sendQuickCommands, userSettingQuickCommands, configQuickCommands } from '../model/game/markdown.js'
+import { sendQuickCommands, configQuickCommands, sendQuickCommandSections, userSettingQuickCommandSections } from '../model/game/markdown.js'
 
 /**@import {botEvent} from '../components/baseClass.js' */
 
@@ -465,7 +465,7 @@ export class phihelp extends phiPluginBase {
             background: getInfo.getill(getInfo.illlist[Number((Math.random() * (getInfo.illlist.length - 1)).toFixed(0))]),
             theme: pluginData?.theme || 'default'
         }, 'userSetting'))
-        await sendQuickCommands(e, userSettingQuickCommands(Config.getUserCfg('config', 'cmdhead')), '用户设置快捷操作')
+        await sendQuickCommandSections(e, userSettingQuickCommandSections(Config.getUserCfg('config', 'cmdhead')), '用户设置快捷操作')
         return true
     }
 }

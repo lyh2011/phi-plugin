@@ -85,6 +85,33 @@ export async function sendQuickCommands(e, commands, title = '快捷操作') {
     }
 }
 
+/**
+ * 构建分组快捷操作菜单。每个分组独立渲染为一张三列表格。
+ * @param {{title:string,commands:{command:string,label:string}[]}[]} sections
+ * @param {string} [title]
+ */
+export function buildQuickCommandSectionsMarkdown(sections, title = '快捷操作') {
+    const blocks = []
+    for (const section of sections || []) {
+        const table = buildQuickCommandMarkdown(section?.commands || [], section?.title || title)
+        if (table) blocks.push(table)
+    }
+    return blocks.join('\n\n')
+}
+
+/** 向 QQ 官方机器人发送分组快捷操作菜单。 */
+export async function sendQuickCommandSections(e, sections, title = '快捷操作') {
+    if (!isOfficialBot(e) || !Config.getUserCfg('config', 'LetterMarkdown')) return
+    const markdown = buildQuickCommandSectionsMarkdown(sections, title)
+    if (!markdown) return
+    try {
+        const sent = /** @type {{error?: unknown[]}|undefined} */ (await send.reply(e, segment.markdown(markdown)))
+        if (sent?.error?.length) logger.warn('[phi-plugin] 快捷操作 Markdown 发送失败')
+    } catch (error) {
+        logger.warn('[phi-plugin] 快捷操作 Markdown 发送失败', error)
+    }
+}
+
 /** @param {string} commandHead */
 function normalizeCommandHead(commandHead) {
     return String(commandHead ?? '').replace(/^[/#]+/, '').trim()
@@ -117,6 +144,54 @@ export function userSettingQuickCommands(commandHead) {
         { command: pageCommand(commandHead, 'myset api 0'), label: 'API功能开关' },
         { command: pageCommand(commandHead, 'myset B30分析 0'), label: 'B30统计分析' },
         { command: pageCommand(commandHead, 'market'), label: '主题市场' },
+    ]
+}
+
+/** 用户设置页：每个设置区域单独展示该区域的全部选项。 */
+export function userSettingQuickCommandSections(commandHead) {
+    const command = (setting, value) => pageCommand(commandHead, `myset ${setting} ${value}`)
+    return [
+        {
+            title: '主题风格',
+            commands: [
+                { command: command('theme', 0), label: '[0]默认' },
+                { command: command('theme', 1), label: '[1]寒冬' },
+                { command: command('theme', 2), label: '[2]使一颗心免于哀伤' },
+                { command: command('theme', 3), label: '[3]大师赛2' },
+            ],
+        },
+        {
+            title: 'B30统计数据展示',
+            commands: [
+                { command: command('avgkind', 0), label: '[0]全部统计' },
+                { command: command('avgkind', 1), label: '[1]仅B30' },
+                { command: command('avgkind', 2), label: '[2]仅Top' },
+                { command: command('avgkind', 3), label: '[3]隐藏' },
+            ],
+        },
+        {
+            title: 'B30均值条配色',
+            commands: [
+                { command: command('avgcolor', 0), label: '[0]红' },
+                { command: command('avgcolor', 1), label: '[1]金' },
+                { command: command('avgcolor', 2), label: '[2]蓝' },
+                { command: command('avgcolor', 3), label: '[3]绿' },
+            ],
+        },
+        {
+            title: 'API功能开关',
+            commands: [
+                { command: command('api', 0), label: '[0]启用' },
+                { command: command('api', 1), label: '[1]禁用' },
+            ],
+        },
+        {
+            title: 'B30统计分析',
+            commands: [
+                { command: command('B30分析', 0), label: '[0]显示' },
+                { command: command('B30分析', 1), label: '[1]隐藏' },
+            ],
+        },
     ]
 }
 
